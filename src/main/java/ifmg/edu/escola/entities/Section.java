@@ -1,22 +1,22 @@
 package ifmg.edu.escola.entities;
 
-import ifmg.edu.escola.constants.ResourceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tb_resource")
-public class Resource {
+@Table(name = "tb_section")
+public class Section {
 
     @EqualsAndHashCode.Include
     @Id
@@ -27,15 +27,14 @@ public class Resource {
     private Integer position;
     private String imgUri;
 
-    @Enumerated(EnumType.STRING) //or ORDINAL
-    private ResourceType resourceType;
+    @ManyToOne
+    @JoinColumn(name = "resource_id")
+    private Resource resource;
 
     @ManyToOne
-    @JoinColumn(name = "offer_id")
-    private Offer offer;
+    @JoinColumn(name = "prerequisite_id")
+    private Section prerequisite;
 
-    @OneToMany(mappedBy = "resource")
-    private List<Section> sections = new ArrayList<>();
-
+    @OneToMany(mappedBy = "section")
+    private Set<Lesson> lessons = new HashSet<Lesson>();
 }
-
